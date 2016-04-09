@@ -91,20 +91,20 @@ def getPlan(start, end):
 	steps = direction['steps']
 	return json.dumps(travelPlans(steps))
 
-print getPlan("719 washington ave albany ca", "1250 53rd Street, Suite 1. Emeryville, CA 94608")
+# print getPlan("719 washington ave albany ca", "1250 53rd Street, Suite 1. Emeryville, CA 94608")
 
-# from flask import Flask
-# from flask import Response
-# from flask import request
-# app = Flask(__name__)
+from flask import Flask
+from flask import Response
+from flask import request
+app = Flask(__name__)
 
-# @app.route('/')
-# def planz():
-# 	start = request.args.get('from')
-# 	end = request.args.get('to')
-# 	return Response(getPlan(start, end), mimetype='application/json')
-# 	# return getPlan("719 washington ave albany ca", "1250 53rd Street, Suite 1. Emeryville, CA 94608")
+@app.route('/')
+def planz():
+	start = request.args.get('from')
+	end = request.args.get('to')
+	return Response(getPlan(start, end), mimetype='application/json')
+	# return getPlan("719 washington ave albany ca", "1250 53rd Street, Suite 1. Emeryville, CA 94608")
 
-# if __name__ == '__main__':
-#     app.run(host="0.0.0.0")
+if __name__ == '__main__':
+    app.run(host="0.0.0.0")
 
