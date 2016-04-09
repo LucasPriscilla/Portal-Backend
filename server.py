@@ -4,7 +4,7 @@
 sudo pip install python-gmaps
 python server.py
 
-example: 
+example:
 http://127.0.0.1:5000/?from=%22719%20washington%20ave%20albany%20ca%22&to=%221250%2053rd%20Street,%20Suite%201.%20Emeryville,%20CA%2094608%22
 """
 import json
@@ -54,7 +54,7 @@ def routeStats(stepList):
 		duration += step['duration']
 		cost += step['price']
 	return duration, cost
-	
+
 def travelPlans(steps):
 	stepLists = [[]]
 	# this constructs 2^ len(step) trees
@@ -100,5 +100,5 @@ def planz():
 	# return getPlan("719 washington ave albany ca", "1250 53rd Street, Suite 1. Emeryville, CA 94608")
 
 if __name__ == '__main__':
-    app.run()
+    app.run(host="0.0.0.0")
 
