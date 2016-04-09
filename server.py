@@ -12,10 +12,12 @@ from gmaps import Directions
 api = Directions()
 from gmaps import Geocoding
 geoApi = Geocoding()
+import time
 
 def getStepDict(duration, price, start_coord, end_coord, mode, description=None):
 	myDict = {}
 	myDict['duration'] = duration
+	myDict['duration_str'] = timeFormatPlease(duration)
 	myDict['price'] = price
 	myDict['mode'] = mode
 	start_location = geoApi.reverse(start_coord['lat'], start_coord['lng'])[0]['formatted_address']
@@ -49,6 +51,9 @@ def stepsChoice(step):
 		mainDictList = getStepDict(step['duration']['value'], 0, step['start_location'], step['end_location'], "walking", step['html_instructions'])
 	return mainDictList, uberDict
 
+def timeFormatPlease(seconds):
+	return time.strftime('%H:%M:%S', time.gmtime(seconds))
+
 # return overall duration, $
 def routeStats(stepList):
 	duration = 0
@@ -80,8 +85,10 @@ def travelPlans(steps):
 		duration, cost = routeStats(stepList) # aggregate the duration and cost
 		finalRoute['steps'] = stepList
 		finalRoute['duration'] = duration
+		finalRoute['duration_str'] = timeFormatPlease(duration)
 		finalRoute['cost'] = cost
 		finalRouteList += [finalRoute]
+
 	return finalRouteList
 
 def getPlan(start, end):
