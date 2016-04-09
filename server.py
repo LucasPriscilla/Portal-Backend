@@ -13,7 +13,7 @@ api = Directions()
 from gmaps import Geocoding
 geoApi = Geocoding()
 
-def getStepDict(duration, price, start_coord, end_coord, mode):
+def getStepDict(duration, price, start_coord, end_coord, mode, description=None):
 	myDict = {}
 	myDict['duration'] = duration
 	myDict['price'] = price
@@ -26,6 +26,9 @@ def getStepDict(duration, price, start_coord, end_coord, mode):
 	myDict['start_lng'] = start_coord['lng']
 	myDict['end_lat'] = end_coord['lat']
 	myDict['end_lng'] = end_coord['lng']
+	if not description:
+		description = "Uber to " + end_location
+	myDict['description'] = description
 	return myDict
 
 def getUber(start_location, end_location):
@@ -41,9 +44,9 @@ def stepsChoice(step):
 		uberDict = getStepDict(duration, price, start_coord, end_coord, "uber")
 	mainDictList = None
 	if step['travel_mode'] == "TRANSIT":
-		mainDictList = getStepDict(step['duration']['value'], 3.2, step['start_location'], step['end_location'], "transit")
+		mainDictList = getStepDict(step['duration']['value'], 3.2, step['start_location'], step['end_location'], "transit", step['html_instructions'])
 	elif step['travel_mode'] == "WALKING":
-		mainDictList = getStepDict(step['duration']['value'], 0, step['start_location'], step['end_location'], "walking")
+		mainDictList = getStepDict(step['duration']['value'], 0, step['start_location'], step['end_location'], "walking", step['html_instructions'])
 	return mainDictList, uberDict
 
 # return overall duration, $
@@ -59,6 +62,7 @@ def travelPlans(steps):
 	stepLists = [[]]
 	# this constructs 2^ len(step) trees
 	for step in steps:
+		print step
 		main, uber = stepsChoice(step)
 		list_to_add = []
 		for stepList in stepLists:
@@ -87,18 +91,20 @@ def getPlan(start, end):
 	steps = direction['steps']
 	return json.dumps(travelPlans(steps))
 
-from flask import Flask
-from flask import Response
-from flask import request
-app = Flask(__name__)
+print getPlan("719 washington ave albany ca", "1250 53rd Street, Suite 1. Emeryville, CA 94608")
 
-@app.route('/')
-def planz():
-	start = request.args.get('from')
-	end = request.args.get('to')
-	return Response(getPlan(start, end), mimetype='application/json')
-	# return getPlan("719 washington ave albany ca", "1250 53rd Street, Suite 1. Emeryville, CA 94608")
+# from flask import Flask
+# from flask import Response
+# from flask import request
+# app = Flask(__name__)
 
-if __name__ == '__main__':
-    app.run(host="0.0.0.0")
+# @app.route('/')
+# def planz():
+# 	start = request.args.get('from')
+# 	end = request.args.get('to')
+# 	return Response(getPlan(start, end), mimetype='application/json')
+# 	# return getPlan("719 washington ave albany ca", "1250 53rd Street, Suite 1. Emeryville, CA 94608")
+
+# if __name__ == '__main__':
+#     app.run(host="0.0.0.0")
 
