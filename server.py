@@ -88,6 +88,7 @@ def getPlan(start, end):
 	return json.dumps(travelPlans(steps))
 
 from flask import Flask
+from flask import Response
 from flask import request
 app = Flask(__name__)
 
@@ -95,7 +96,7 @@ app = Flask(__name__)
 def planz():
 	start = request.args.get('from')
 	end = request.args.get('to')
-	return getPlan(start, end)
+	return Response(getPlan(start, end), mimetype='application/json')
 	# return getPlan("719 washington ave albany ca", "1250 53rd Street, Suite 1. Emeryville, CA 94608")
 
 if __name__ == '__main__':
