@@ -67,7 +67,6 @@ def travelPlans(steps):
 	stepLists = [[]]
 	# this constructs 2^ len(step) trees
 	for step in steps:
-		print step
 		main, uber = stepsChoice(step)
 		list_to_add = []
 		for stepList in stepLists:
@@ -84,6 +83,7 @@ def travelPlans(steps):
 		finalRoute = {}
 		duration, cost = routeStats(stepList) # aggregate the duration and cost
 		finalRoute['steps'] = stepList
+		finalRoute['modes'] = list(set([step['mode'] for step in stepList]))
 		finalRoute['duration'] = duration
 		finalRoute['duration_str'] = timeFormatPlease(duration)
 		finalRoute['cost'] = cost
