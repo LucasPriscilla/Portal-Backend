@@ -13,6 +13,8 @@ api = Directions()
 from gmaps import Geocoding
 geoApi = Geocoding()
 import time
+import datetime
+
 
 def getStepDict(polyline, duration, price, start_coord, end_coord, mode, description=None):
 	myDict = {}
@@ -90,6 +92,12 @@ def travelPlans(steps):
 		finalRoute['duration'] = duration
 		finalRoute['duration_str'] = timeFormatPlease(duration)
 		finalRoute['cost'] = cost
+
+		time = datetime.datetime.now()
+		for step in finalRoute['steps']:
+			step['start_time'] = "%s:%s" % (time.hour, time.minute)
+			time += datetime.timedelta(0,step['duration'])
+			step['end_time'] = "%s:%s" % (time.hour, time.minute)
 		finalRouteList += [finalRoute]
 
 	return finalRouteList
