@@ -95,9 +95,9 @@ def travelPlans(steps):
 
 		time = datetime.datetime.now()
 		for step in finalRoute['steps']:
-			step['start_time'] = "%s:%s" % (time.hour, time.minute)
+			step['start_time'] = time.strftime('%I:%M%p').lstrip('0')
 			time += datetime.timedelta(0,step['duration'])
-			step['end_time'] = "%s:%s" % (time.hour, time.minute)
+			step['end_time'] = time.strftime('%I:%M%p').lstrip('0')
 		finalRouteList += [finalRoute]
 
 	return finalRouteList
