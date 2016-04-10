@@ -14,8 +14,9 @@ from gmaps import Geocoding
 geoApi = Geocoding()
 import time
 
-def getStepDict(duration, price, start_coord, end_coord, mode, description=None):
+def getStepDict(polyline, duration, price, start_coord, end_coord, mode, description=None):
 	myDict = {}
+	myDict['polyline'] = polyline
 	myDict['duration'] = duration
 	myDict['duration_str'] = timeFormatPlease(duration)
 	myDict['price'] = price
@@ -35,20 +36,22 @@ def getStepDict(duration, price, start_coord, end_coord, mode, description=None)
 
 def getUber(start_location, end_location):
 	uberDir = api.directions(str(start_location['lat']) + " " + str(start_location['lng']), str(end_location['lat']) + " " + str(end_location['lng']), mode="driving")[0]['legs'][0]
-	return uberDir['duration']['value'], uberDir['duration']['value'] * 0.5 / 60 + 3.2
+	polyline = [step['polyline']['points'] for step in uberDir['steps']]
+	return uberDir['duration']['value'], uberDir['duration']['value'] * 0.5 / 60 + 3.2, polyline
 
 def stepsChoice(step):
 	uberDict = None
 	if step['travel_mode'] == "WALKING" and step['duration']['value'] >= 600: # this means that we need to uber
-		duration, price = getUber(step['start_location'], step['end_location'])
+		duration, price, polyline = getUber(step['start_location'], step['end_location'])
 		start_coord = step['start_location']
 		end_coord = step['end_location']
-		uberDict = getStepDict(duration, price, start_coord, end_coord, "uber")
+		uberDict = getStepDict(polyline, duration, price, start_coord, end_coord, "uber")
 	mainDictList = None
+	polyline = [step['polyline']['points']]
 	if step['travel_mode'] == "TRANSIT":
-		mainDictList = getStepDict(step['duration']['value'], 3.2, step['start_location'], step['end_location'], "transit", step['html_instructions'])
+		mainDictList = getStepDict(polyline, step['duration']['value'], 3.2, step['start_location'], step['end_location'], "transit", step['html_instructions'])
 	elif step['travel_mode'] == "WALKING":
-		mainDictList = getStepDict(step['duration']['value'], 0, step['start_location'], step['end_location'], "walking", step['html_instructions'])
+		mainDictList = getStepDict(polyline, step['duration']['value'], 0, step['start_location'], step['end_location'], "walking", step['html_instructions'])
 	return mainDictList, uberDict
 
 def timeFormatPlease(seconds):
@@ -114,4 +117,3 @@ def planz():
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0")
-
