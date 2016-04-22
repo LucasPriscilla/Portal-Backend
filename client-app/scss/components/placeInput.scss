@@ -1,0 +1,38 @@
+.place-input {
+    border: 1px solid $border-color;
+
+    .group {
+        padding-left: 10px;
+        padding-right: 10px;
+        padding-top: 5px;
+        padding-bottom :5px;
+        width: 100%;
+        background: #FFFFFF;
+
+        &:first-child {
+            border-bottom: 1px solid $border-color;
+
+        }
+    }
+
+    .group-label {
+        font-size: 10px;
+        display: inline-block;
+        width: $label_width;
+        vertical-align: middle;
+        color: $light-text-color;
+    }
+
+    input[type=text] {
+        outline: none;
+        padding: 5px;
+        font-size: 14px;
+        border: none;
+        width: calc(100% - #{$label_width});
+        display: inline-block;
+        vertical-align: middle;
+        margin-top: -2px;
+        color: #000000;
+        font-family: $font;
+    }
+}

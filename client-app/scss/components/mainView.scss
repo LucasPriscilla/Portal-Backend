@@ -1,0 +1,20 @@
+.main {
+    height: 100%;
+
+    .map {
+        width: calc(100% - #{$sidebar_width});
+        height: 100%;
+        float: left;
+    }
+
+    .sidebar {
+        float: left;
+        width: $sidebar_width;
+        position: relative;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        height: 100%;
+    }
+}
+

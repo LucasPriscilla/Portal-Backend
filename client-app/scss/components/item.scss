@@ -1,0 +1,28 @@
+.route-item, .step-item {
+    background: white;
+    padding: 10px;
+    width: 100%;
+    margin-bottom: 20px;
+    border: 1px solid $border-color;
+    line-height: 24px;
+    font-size: 12px;
+    font-weight: 600;
+    color: $light-text-color;
+    cursor: pointer;
+
+    .title {
+        color: $dark-text-color;
+        font-size: 16px;
+    }
+
+    .icon {
+        display: inline-block;
+        width: 25px;
+        height: 25px;
+        margin-top: 15px;
+
+        &:not(:last-child) {
+            margin-right: 10px;
+        }
+    }
+}

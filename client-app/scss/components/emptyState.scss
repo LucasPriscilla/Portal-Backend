@@ -1,0 +1,16 @@
+.empty-state {
+    display: block;
+    font-size: 14px;
+    color: $light-text-color;
+    padding: 20px;
+    line-height: 42px;
+    width: 100%;
+
+    strong {
+        font-size: 18px;
+        text-align: center;
+        display: block;
+        color: $dark-text-color;
+        margin-bottom: 15px;
+    }
+}
